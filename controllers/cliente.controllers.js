@@ -34,27 +34,28 @@ const registro_cliente = async function (req, res) {
 }
 
 const login_cliente = async function (req, res) {
-    // var data = req.body;
-    // var cliente_arr = [];
+    var data = req.body;
+    var cliente_arr = [];
 
-    // cliente_arr = await Cliente.find({ email: data.email });
+    cliente_arr = await Cliente.find({ email: data.email });
 
-    // if (cliente_arr.length == 0) {
-    //     res.status(200).send({ message: 'No se encontro el correo', data:undefined });
-    // } else {
-    //     let user = cliente_arr[0];
-    //     bcrypt.compare(data.password, user.password, async function (error, check) {
-    //         if (check) {
-    //             res.status(200).send({
-    //                 data: user,
-    //                 token: jwt.createToken(user)
-    //             });
-    //         } else {
-    //             res.status(200).send({ message: 'La contraseña no coincide', data: undefined });
-    //         }
-    //     });
+    if (cliente_arr.length == 0) {
+        res.status(400).send({ message: 'No se encontro el correo', data: undefined });
+    } else {
+        let user = cliente_arr[0];
+        bcrypt.compare(data.password, user.password, async function (error, check) {
+            if (check) {
+                res.status(200).send({
+                    message: 'Login Correctamente',
+                    data: user,
+                    token: jwt.createToken(user)
+                });
+            } else {
+                res.status(400).send({ message: 'La contraseña no coincide', data: undefined });
+            }
+        });
 
-    // }
+    }
 
 }
 
@@ -187,56 +188,55 @@ const eliminar_cliente_admin = async (req, res) => {
 }
 
 const obtener_cliente_guest = async function (req, res) {
-    // if (req.user) {
-    //     var id = req.params['id'];
-    //     try {
-    //         var reg = await Cliente.findById({ _id: id });
-    //         res.status(200).send({ data: reg });//con el res se envia la data al frontend
-    //     } catch (error) {
-    //         res.status(200).send({ data: undefined });
-    //     }
+    if (req.user) {
+        var id = req.params['id'];
+        try {
+            var reg = await Cliente.findById({ _id: id });
+            res.status(200).send({ data: reg });//con el res se envia la data al frontend
+        } catch (error) {
+            res.status(200).send({ data: undefined });
+        }
 
-    // } else {
-    //     res.status(500).send({ message: 'NoAccess' });
-    // }
+    } else {
+        res.status(500).send({ message: 'NoAccess' });
+    }
 }
 
 const actualizar_perfil_cliente_guest = async function (req, res) {
-    // if (req.user) {
-    //     var id = req.params['id'];
-    //     var data = req.body;
-    //     console.log(data.password);
-
-    //     if (data.password) {
-    //         console.log('con contraseña');
-    //         bcrypt.hash(data.password, null, null, async function (err, hash) {
-    //             var reg = await Cliente.findByIdAndUpdate({ _id: id }, {
-    //                 nombres: data.nombres,
-    //                 apellidos: data.apellidos,
-    //                 telefono: data.telefono,
-    //                 f_nacimiento: data.f_nacimiento,
-    //                 dni: data.dni,
-    //                 genero: data.genero,
-    //                 pais: data.pais,
-    //                 password: hash,
-    //             });
-    //             res.status(200).send({ data: reg });
-    //         })
-    //     } else {
-    //         console.log('sin contraseña');
-    //         var reg = await Cliente.findByIdAndUpdate({ _id: id }, {
-    //             nombres: data.nombres,
-    //             apellidos: data.apellidos,
-    //             telefono: data.telefono,
-    //             f_nacimiento: data.f_nacimiento,
-    //             dni: data.dni,
-    //             genero: data.genero,
-    //             pais: data.pais,
-    //         });
-    //     }
-    // } else {
-    //     res.status(200).send({ data: reg });
-    // }
+    if (req.user) {
+        var id = req.params['id'];
+        var data = req.body;
+        console.log(data.password);
+        if (data.password) {
+            console.log('con contraseña');
+            bcrypt.hash(data.password, null, null, async function (err, hash) {
+                var reg = await Cliente.findByIdAndUpdate({ _id: id }, {
+                    nombres: data.nombres,
+                    apellidos: data.apellidos,
+                    telefono: data.telefono,
+                    f_nacimiento: data.f_nacimiento,
+                    cedula: data.cedula,
+                    genero: data.genero,
+                    pais: data.pais,
+                    password: hash,
+                });
+                res.status(200).send({ message: 'Datos Actualizados Correctamente', data: reg });
+            });
+        } else {
+            console.log('sin contraseña');
+            var reg = await Cliente.findByIdAndUpdate({ _id: id }, {
+                nombres: data.nombres,
+                apellidos: data.apellidos,
+                telefono: data.telefono,
+                f_nacimiento: data.f_nacimiento,
+                cedula: data.cedula,
+                genero: data.genero,
+                pais: data.pais,
+            });
+        }
+    } else {
+        res.status(200).send({ message: 'Datos Actualizados Correctamente', data: reg });
+    }
 
 
 }
