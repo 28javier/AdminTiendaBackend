@@ -18,20 +18,15 @@ const registro_producto_admin = async function (req, res) {
             var portada_name = name[2];
             data.slug = data.titulo.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
             data.portada = portada_name;
-
             let reg = await Producto.create(data);
-
             let inventario = await Inventario.create({
                 admin: req.user.sub,
                 cantidad: data.stock,
                 proveedor: 'Primer registro',
                 producto: reg._id
-
             });
-
             res.status(200).send({ message: 'Producto registrado correctamente', data: reg, inventario: inventario });
             // res.status(200).send({ data: reg, intentario: inventario });
-
         } else {
             res.status(500).send({ message: 'NoAccess' });
         }
@@ -162,11 +157,8 @@ const listar_inventario_producto_admin = async function (req, res) {
     if (req.user) {
         if (req.user.rol == 'Admin-Rol') {
             var id = req.params['id'];
-
             var reg = await Inventario.find({ producto: id }).populate('admin').sort({ createdAt: -1 });
-
             res.status(200).send({ data: reg });
-
         } else {
             res.status(500).send({ message: 'NoAccess' });
         }
@@ -241,10 +233,8 @@ const actualizar_producto_variedades_admin = async function (req, res) {
             let reg = await Producto.findByIdAndUpdate({ _id: id }, {
                 titulo_variedad: data.titulo_variedad,
                 variedades: data.variedades
-            })
+            });
             res.status(200).send({ data: reg });
-
-
         } else {
             res.status(500).send({ message: 'NoAccess' });
         }
@@ -293,6 +283,27 @@ const eliminar_imagen_galeria_admin = async function (req, res) {
     }
 }
 
+
+// Metodos Publicos
+const listar_productos_publico = async function (req, res) {
+    let filtro = req.params['filtro'];
+    let reg = await Producto.find({ titulo: new RegExp(filtro, 'i') }).sort({ createdAt: -1 });
+    res.status(200).send({ data: reg });
+}
+
+const obtener_productos_slug_publico = async function (req, res) {
+    let slug = req.params['slug'];
+    let reg = await Producto.findOne({ slug: slug });
+    res.status(200).send({ data: reg });
+}
+
+const listar_productos_recomendados_publico = async function (req, res) {
+    let categoria = req.params['categoria'];
+    let reg = await Producto.find({ categoria: categoria }).sort({ createdAt: -1 }).limit(8);
+    res.status(200).send({ data: reg });
+}
+// Fin Metodos Publicos
+
 module.exports = {
     registro_producto_admin,
     listar_productos_admin,
@@ -305,6 +316,9 @@ module.exports = {
     registro_inventario_producto_admin,
     actualizar_producto_variedades_admin,
     agregar_imagen_galeria_admin,
-    eliminar_imagen_galeria_admin
+    eliminar_imagen_galeria_admin,
+    listar_productos_publico,
+    obtener_productos_slug_publico,
+    listar_productos_recomendados_publico
 
 }

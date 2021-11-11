@@ -1,5 +1,4 @@
 'use strict'
-
 var Cupon = require('../models/cupon.models');
 
 const registro_cupon_admin = async function (req, res) {
@@ -16,7 +15,6 @@ const registro_cupon_admin = async function (req, res) {
     }
 
 }
-
 
 const listar_cupones_admin = async function (req, res) {
 

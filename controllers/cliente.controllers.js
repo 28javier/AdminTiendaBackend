@@ -1,8 +1,8 @@
 'use strict'
-
 var Cliente = require('../models/cliente.models');
 var bcrypt = require('bcrypt-nodejs');
 var jwt = require('../helpers/jwt.helpers');
+
 
 const registro_cliente = async function (req, res) {
     var data = req.body;
@@ -61,7 +61,7 @@ const login_cliente = async function (req, res) {
 
 const listar_clientes_filtro_admin = async function (req, res) {
 
-    console.log(req.user);
+    // console.log(req.user);
     if (req.user) {
         if (req.user.rol == 'Admin-Rol') {
             let tipo = req.params['tipo'];
@@ -160,7 +160,7 @@ const actualizar_cliente_admin = async function (req, res) {
                 dni: data.dni,
                 genero: data.genero
             })
-            res.status(200).send({ message: 'Cleinte Actualizado Correctamente', data: reg });
+            res.status(200).send({ message: 'Cliente Actualizado Correctamente', data: reg });
 
         } else {
             res.status(500).send({ message: 'NoAccess' });
@@ -240,8 +240,6 @@ const actualizar_perfil_cliente_guest = async function (req, res) {
 
 
 }
-
-
 
 
 module.exports = {

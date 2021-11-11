@@ -2,7 +2,6 @@
 
 var express = require('express');
 var clienteController = require('../controllers/cliente.controllers');
-
 var api = express.Router();
 var auth = require('../middleware/autheticate.middleware');
 
