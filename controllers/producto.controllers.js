@@ -7,6 +7,8 @@ var fs = require('fs');
 var path = require('path');
 
 
+
+
 const registro_producto_admin = async function (req, res) {
     if (req.user) {
         if (req.user.rol == 'Admin-Rol') {

@@ -6,6 +6,23 @@ var app = express();
 var mongoose = require('mongoose');
 var port = process.env.PORT || 4201;
 
+var server = require('http').createServer(app);
+var io = require('socket.io')(server, {
+    cors: { origin: '*' }
+});
+io.on('connection', function (socket) {
+    socket.on('delete-carrito', function (data) {
+        io.emit('new-carrito', data);
+        console.log(data);
+    });
+
+    socket.on('add-carrito-add', function (data) {
+        io.emit('new-carrito-add', data);
+        console.log(data);
+    });
+});
+
+
 
 var cliente_route = require('./routes/cliente.routes');
 var admin_route = require('./routes/admin.routes');
@@ -14,11 +31,12 @@ var cupon_route = require('./routes/cupon.routes');
 var config_route = require('./routes/config.routes');
 var carrito_route = require('./routes/carrito.routes');
 
-mongoose.connect('mongodb+srv://root:oMMqFF38QYV6yRax@ecommerce.fzfvu.mongodb.net/tienda', { useUnifiedTopology: true, useNewUrlParser: true }, (err, res) => {
+// mongodb+srv://root:oMMqFF38QYV6yRax@ecommerce.fzfvu.mongodb.net/tienda
+mongoose.connect('mongodb://127.0.0.1:27017/tienda', { useUnifiedTopology: true, useNewUrlParser: true }, (err, res) => {
     if (err) {
         console.log(err);
     } else {
-        app.listen(port, function () {
+        server.listen(port, function () {
             console.log('Servidor corriendo en el puerto' + port);
         });
     }

@@ -1,8 +1,8 @@
 'use strict'
-var Cliente = require('../models/cliente.models');
-var bcrypt = require('bcrypt-nodejs');
-var jwt = require('../helpers/jwt.helpers');
-
+const Cliente = require('../models/cliente.models');
+const bcrypt = require('bcrypt-nodejs');
+const jwt = require('../helpers/jwt.helpers');
+const Direccion = require('../models/direccion.model');
 
 const registro_cliente = async function (req, res) {
     var data = req.body;
@@ -242,6 +242,79 @@ const actualizar_perfil_cliente_guest = async function (req, res) {
 }
 
 
+// direcciones de los clientes
+const registro_direccion_cliente = async function (req, res) {
+    if (req.user) {
+        let data = req.body;
+        if (data.principal) {
+            let direcciones = await Direccion.find({ cliente: data.cliente });
+            direcciones.forEach(async element => {
+                await Direccion.findByIdAndUpdate({ _id: element._id }, { principal: false })
+            })
+        }
+        let reg = await Direccion.create(data);
+        res.status(200).send({ message: 'Dirección registrada correctamente', data: reg });
+    } else {
+        res.status(500).send({ message: 'NoAccess' });
+    }
+}
+
+const obtener_direccion_todos_cliente = async function (req, res) {
+    if (req.user) {
+        let id = req.params['id'];
+        let direcciones = await Direccion.find({ cliente: id }).populate('cliente').sort({ createdAt: -1 });
+        res.status(200).send({ data: direcciones });
+    } else {
+        res.status(500).send({ message: 'NoAccess' });
+    }
+
+}
+
+const cambiar_direccion_principal_cliente = async function (req, res) {
+    if (req.user) {
+        let id = req.params['id'];
+        let cliente = req.params['cliente'];
+        let direcciones = await Direccion.find({ cliente: cliente });
+        direcciones.forEach(async element => {
+            await Direccion.findByIdAndUpdate({ _id: element._id }, { principal: false });
+        });
+        await Direccion.findByIdAndUpdate({ _id: id }, { principal: true });
+        res.status(200).send({ message: 'Dirección del cliente cambiada correctmente', data: true });
+    } else {
+        res.status(500).send({ message: 'NoAccess' });
+    }
+}
+
+
+
+
+const obtener_direccion_principal_cliente = async function (req, res) {
+    if (req.user) {
+        var id = req.params['id'];
+        var direccion = undefined;
+        direccion = await Direccion.findOne({ cliente: id, principal: true });
+        if (direccion == undefined) {
+            res.status(200).send({ data: undefined });
+        } else {
+            res.status(200).send({ data: direccion });
+        }
+    } else {
+        res.status(500).send({ message: 'NoAccess' });
+    }
+}
+
+const eliminar_direccion_cliente = async (req, res) => {
+    if (req.user) {
+        var id = req.params['id'];
+        let reg = await Direccion.findByIdAndRemove({ _id: id });
+        res.status(200).send({ message: 'Dirección elminado Correctamente', data: reg });//linea que pinta lo eliminado
+    } else {
+        res.status(500).send({ message: 'NoAccess' });
+
+    }
+}
+// fin direcciones de los clientes
+
 module.exports = {
     registro_cliente,
     login_cliente,
@@ -251,5 +324,10 @@ module.exports = {
     actualizar_cliente_admin,
     eliminar_cliente_admin,
     obtener_cliente_guest,
-    actualizar_perfil_cliente_guest
+    actualizar_perfil_cliente_guest,
+    registro_direccion_cliente,
+    obtener_direccion_todos_cliente,
+    cambiar_direccion_principal_cliente,
+    obtener_direccion_principal_cliente,
+    eliminar_direccion_cliente
 }
