@@ -2,6 +2,7 @@
 
 var Producto = require('../models/producto.models');
 var Inventario = require('../models/inventario.models');
+var Review = require('../models/review.models');
 
 var fs = require('fs');
 var path = require('path');
@@ -304,6 +305,22 @@ const listar_productos_recomendados_publico = async function (req, res) {
     let reg = await Producto.find({ categoria: categoria }).sort({ createdAt: -1 }).limit(8);
     res.status(200).send({ data: reg });
 }
+
+const listar_productos_nuevos_publico = async function (req, res) {
+    let reg = await Producto.find().sort({ createdAt: -1 }).limit(8);
+    res.status(200).send({ data: reg });
+}
+
+const listar_productos_masvendidos_publico = async function (req, res) {
+    let reg = await Producto.find().sort({ nventas: -1 }).limit(8);
+    res.status(200).send({ data: reg });
+}
+
+const obtener_review_producto_publicos = async function (req, res) {
+    let id = req.params['id'];
+    let review = await Review.find({ producto: id }).populate('cliente').sort({ createdAt: -1 });
+    res.status(200).send({ data: review });
+}
 // Fin Metodos Publicos
 
 module.exports = {
@@ -321,6 +338,9 @@ module.exports = {
     eliminar_imagen_galeria_admin,
     listar_productos_publico,
     obtener_productos_slug_publico,
-    listar_productos_recomendados_publico
+    listar_productos_recomendados_publico,
+    listar_productos_nuevos_publico,
+    listar_productos_masvendidos_publico,
+    obtener_review_producto_publicos
 
 }

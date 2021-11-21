@@ -30,6 +30,10 @@ var producto_route = require('./routes/producto.routes');
 var cupon_route = require('./routes/cupon.routes');
 var config_route = require('./routes/config.routes');
 var carrito_route = require('./routes/carrito.routes');
+var venta_route = require('./routes/venta.routes');
+var descuento_route = require('./routes/descuento.routes');
+var contacto_route = require('./routes/contacto.routes');
+var review_route = require('./routes/review.routes');
 
 // mongodb+srv://root:oMMqFF38QYV6yRax@ecommerce.fzfvu.mongodb.net/tienda
 mongoose.connect('mongodb://127.0.0.1:27017/tienda', { useUnifiedTopology: true, useNewUrlParser: true }, (err, res) => {
@@ -62,6 +66,10 @@ app.use('/api', producto_route);
 app.use('/api', cupon_route);
 app.use('/api', config_route);
 app.use('/api', carrito_route);
+app.use('/api', venta_route);
+app.use('/api', descuento_route);
+app.use('/api', contacto_route);
+app.use('/api', review_route);
 
 
 module.exports = app;

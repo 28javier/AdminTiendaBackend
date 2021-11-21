@@ -29,4 +29,10 @@ api.post('/registro_inventario_producto_admin', auth.auth, productoController.re
 api.get('/listar_productos_publico/:filtro?', productoController.listar_productos_publico);
 api.get('/obtener_productos_slug_publico/:slug', productoController.obtener_productos_slug_publico);
 api.get('/listar_productos_recomendados_publico/:categoria', productoController.listar_productos_recomendados_publico);
+// listar_productos_nuevos_publico
+api.get('/listar_productos_nuevos_publico', productoController.listar_productos_nuevos_publico);
+api.get('/listar_productos_masvendidos_publico', productoController.listar_productos_masvendidos_publico);
+// obtener_review_producto_publicos
+api.get('/obtener_review_producto_publicos/:id', productoController.obtener_review_producto_publicos);
+
 module.exports = api;

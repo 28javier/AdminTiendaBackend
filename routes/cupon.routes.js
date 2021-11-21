@@ -12,6 +12,8 @@ api.get('/listar_cupones_admin/:filtro?', auth.auth, cuponController.listar_cupo
 api.get('/obtener_cupon_admin/:id', auth.auth, cuponController.obtener_cupon_admin);
 api.put('/actualizar_cupon_admin/:id', auth.auth, cuponController.actualizar_cupon_admin);
 api.delete('/eliminar_cupon_admin/:id', auth.auth, cuponController.eliminar_cupon_admin);
+// validar_cupon_cliente
+api.get('/validar_cupon_cliente/:cupon', auth.auth, cuponController.validar_cupon_cliente);
 
 
 

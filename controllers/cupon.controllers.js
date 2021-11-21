@@ -93,11 +93,32 @@ const eliminar_cupon_admin = async function (req, res) {
     }
 }
 
+const validar_cupon_cliente = async function (req, res) {
+    if (req.user) {
+        let cupon = req.params['cupon'];
+        let data = await Cupon.findOne({ codigo: cupon });
+        if (data) {
+            if (data.limite == 0) {
+                res.status(200).send({ message: 'El limite de este cupón ya fue canjeado ', data: undefined });
+            } else {
+                res.status(200).send({ message: 'El cupón fue aplicado correctamente', data: data });
+            }
+        } else {
+            res.status(200).send({ message: 'No existe ese cupón', data: undefined });
+
+        }
+        // res.status(200).send({ message: 'Cupón Creado Correctamente', data: reg });
+    } else {
+        res.status(500).send({ message: 'NoAccess' });
+    }
+
+}
 
 module.exports = {
     registro_cupon_admin,
     listar_cupones_admin,
     obtener_cupon_admin,
     actualizar_cupon_admin,
-    eliminar_cupon_admin
+    eliminar_cupon_admin,
+    validar_cupon_cliente
 }

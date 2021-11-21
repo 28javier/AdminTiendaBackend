@@ -27,4 +27,12 @@ api.put('/cambiar_direccion_principal_cliente/:id/:cliente', auth.auth, clienteC
 api.get('/obtener_direccion_principal_cliente/:id', auth.auth, clienteController.obtener_direccion_principal_cliente);
 // eliminar_direccion_cliente
 api.delete('/eliminar_direccion_cliente/:id', auth.auth, clienteController.eliminar_direccion_cliente);
+
+
+// oredenes de venta
+// obtener_ordenes_cliente
+api.get('/obtener_ordenes_cliente/:id', auth.auth, clienteController.obtener_ordenes_cliente);
+// obtener_detalles_ordenes_cliente
+api.get('/obtener_detalles_ordenes_cliente/:id', auth.auth, clienteController.obtener_detalles_ordenes_cliente);
+
 module.exports = api;
