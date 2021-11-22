@@ -35,8 +35,9 @@ var descuento_route = require('./routes/descuento.routes');
 var contacto_route = require('./routes/contacto.routes');
 var review_route = require('./routes/review.routes');
 
+// mongodb://127.0.0.1:27017/tienda
 // mongodb+srv://root:oMMqFF38QYV6yRax@ecommerce.fzfvu.mongodb.net/tienda
-mongoose.connect('mongodb://127.0.0.1:27017/tienda', { useUnifiedTopology: true, useNewUrlParser: true }, (err, res) => {
+mongoose.connect('mongodb+srv://root:oMMqFF38QYV6yRax@ecommerce.fzfvu.mongodb.net/tienda', { useUnifiedTopology: true, useNewUrlParser: true }, (err, res) => {
     if (err) {
         console.log(err);
     } else {
