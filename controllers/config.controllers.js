@@ -29,7 +29,7 @@ const actualizar_config_admin = async function (req, res) {
                 //obtener imagen con su extension
                 console.log('si hay imagen');
                 var img_path = req.files.logo.path;
-                var name = img_path.split('\\')
+                var name = img_path.split('/')
                 var logo_name = name[2];
                 //actualizacion del documento
 
