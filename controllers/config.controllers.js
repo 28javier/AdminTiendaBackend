@@ -7,10 +7,7 @@ const obtener_config_admin = async function (req, res) {
     if (req.user) {
         if (req.user.rol == 'Admin-Rol') {
             let reg = await Config.findById({ _id: "6182f0e9f91297cb2f238421" })
-
             res.status(200).send({ data: reg });
-
-
         } else {
             res.status(500).send({ message: 'NoAccess' });
         }

@@ -32,7 +32,7 @@ const eliminar_carrito_cliente = async function (req, res) {
     if (req.user) {
         let id = req.params['id'];
         let reg = await Carrito.findByIdAndRemove({ _id: id });
-        res.status(200).send({ data: reg });
+        res.status(200).send({ message: 'Aticulo eliminado del carrito de compras', data: reg });
     } else {
         res.status(500).send({ message: 'NoAccess' });
     }
